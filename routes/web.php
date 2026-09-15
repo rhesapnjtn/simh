@@ -84,7 +84,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/reports/revenue', [ReportController::class, 'revenue'])->middleware('permission:reports.view');
     Route::get('/reports/occupancy', [ReportController::class, 'occupancy'])->middleware('permission:reports.view');
-    Route::get('/reports/export', [ReportController::class, 'export'])->middleware('permission:reports.export');
 
     Route::get('/logs', [ActivityLogController::class, 'index'])->middleware('permission:logs.view');
 
@@ -172,5 +171,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/event-payments/{payment}', [EventBookingController::class, 'destroyPayment'])->middleware('permission:events.payment');
     });
 });
+
+Route::get('/reports/export', [ReportController::class, 'export'])
+    ->middleware(['auth', 'permission:reports.export']);
 
 Route::get('/{any}', fn () => view('app'))->where('any', '.*');

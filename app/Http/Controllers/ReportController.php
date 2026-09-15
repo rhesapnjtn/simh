@@ -193,10 +193,10 @@ class ReportController extends Controller
                 $data = $this->occupancy(request()->merge(['type' => null]));
                 foreach ($data->getData()->daily as $row) {
                     fputcsv($stream, [
-                        $row['date'],
-                        $row['available'],
-                        $row['occupied'],
-                        number_format($row['rate'], 1, ',', '.'),
+                        $row->date,
+                        $row->available,
+                        $row->occupied,
+                        number_format($row->rate, 1, ',', '.'),
                     ]);
                 }
             }

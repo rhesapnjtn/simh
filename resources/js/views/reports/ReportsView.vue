@@ -186,6 +186,11 @@ function exportCSV() {
         to: range.value[1],
         type: tab.value,
     });
-    window.open(`/reports/export?${params.toString()}`, '_blank');
+    const link = document.createElement('a');
+    link.href = `/reports/export?${params.toString()}`;
+    link.download = '';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
 }
 </script>
