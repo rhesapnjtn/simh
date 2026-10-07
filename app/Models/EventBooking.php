@@ -8,22 +8,35 @@ use Illuminate\Support\Str;
 class EventBooking extends Model
 {
     public const TYPE_WEDDING = 'wedding';
+
     public const TYPE_MEETING = 'meeting';
+
     public const TYPE_SEMINAR = 'seminar';
+
     public const TYPE_BIRTHDAY = 'birthday';
+
     public const TYPE_CORPORATE = 'corporate';
+
     public const TYPE_AYCE = 'ayce';
+
     public const TYPE_PRIVATE_PARTY = 'private_party';
+
     public const TYPE_OTHER = 'other';
 
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_CONFIRMED = 'confirmed';
+
     public const STATUS_IN_PROGRESS = 'in_progress';
+
     public const STATUS_COMPLETED = 'completed';
+
     public const STATUS_CANCELLED = 'cancelled';
 
     public const PAYMENT_UNPAID = 'unpaid';
+
     public const PAYMENT_PARTIAL = 'partial';
+
     public const PAYMENT_PAID = 'paid';
 
     public const EVENT_TYPES = [
@@ -101,7 +114,7 @@ class EventBooking extends Model
     public static function generateCode(): string
     {
         do {
-            $code = 'EVT-' . strtoupper(Str::random(8));
+            $code = 'EVT-'.strtoupper(Str::random(8));
         } while (static::where('code', $code)->exists());
 
         return $code;

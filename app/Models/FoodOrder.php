@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class FoodOrder extends Model
 {
     const STATUS_PENDING = 'pending';
+
     const STATUS_PREPARING = 'preparing';
+
     const STATUS_SERVED = 'served';
+
     const STATUS_PAID = 'paid';
+
     const STATUS_CANCELLED = 'cancelled';
 
     protected $fillable = [

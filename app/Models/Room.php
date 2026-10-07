@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     public const STATUS_AVAILABLE = 'available';
+
     public const STATUS_OCCUPIED = 'occupied';
+
     public const STATUS_HOUSEKEEPING = 'housekeeping';
+
     public const STATUS_MAINTENANCE = 'maintenance';
 
     protected $fillable = [

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\RoomType;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class RoomTypeSeeder extends Seeder
 {
@@ -45,7 +46,7 @@ class RoomTypeSeeder extends Seeder
         ];
 
         foreach ($types as $type) {
-            RoomType::updateOrCreate(['slug' => \Illuminate\Support\Str::slug($type['name'])], $type);
+            RoomType::updateOrCreate(['slug' => Str::slug($type['name'])], $type);
         }
     }
 }

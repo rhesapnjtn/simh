@@ -10,6 +10,8 @@ use App\Models\InventoryItem;
 use App\Models\InventoryTransaction;
 use App\Models\MaintenanceRequest;
 use App\Models\PurchaseOrder;
+use App\Models\Reservation;
+use App\Models\Room;
 use App\Models\Supplier;
 use App\Models\User;
 use Carbon\Carbon;
@@ -128,7 +130,7 @@ class ModuleDemoSeeder extends Seeder
 
         // ── Maintenance ─────────────────────────────────────────
         MaintenanceRequest::create([
-            'room_id' => \App\Models\Room::where('status', '!=', 'maintenance')->first()?->id,
+            'room_id' => Room::where('status', '!=', 'maintenance')->first()?->id,
             'title' => 'AC kamar tidak dingin',
             'category' => 'hvac',
             'priority' => 'high',
@@ -183,7 +185,7 @@ class ModuleDemoSeeder extends Seeder
             'code' => 'FB-'.now()->format('ymd').'-DEM0',
             'user_id' => $supervisor->id,
             'guest_id' => null,
-            'room_id' => \App\Models\Reservation::where('status', 'checked_in')->first()?->room_id,
+            'room_id' => Reservation::where('status', 'checked_in')->first()?->room_id,
             'table_no' => null,
             'order_type' => 'delivery',
             'status' => 'served',

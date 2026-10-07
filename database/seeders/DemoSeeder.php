@@ -135,7 +135,7 @@ class DemoSeeder extends Seeder
         ]);
 
         if (in_array($status, [Reservation::STATUS_CHECKED_IN, Reservation::STATUS_CHECKED_OUT])) {
-            $room->update(['status' => Reservation::STATUS_CHECKED_IN === $status ? Room::STATUS_OCCUPIED : Room::STATUS_HOUSEKEEPING]);
+            $room->update(['status' => $status === Reservation::STATUS_CHECKED_IN ? Room::STATUS_OCCUPIED : Room::STATUS_HOUSEKEEPING]);
         }
 
         $reservation->recalculate($room->roomType);

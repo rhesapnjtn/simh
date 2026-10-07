@@ -9,14 +9,21 @@ use Illuminate\Support\Str;
 class Reservation extends Model
 {
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_CONFIRMED = 'confirmed';
+
     public const STATUS_CHECKED_IN = 'checked_in';
+
     public const STATUS_CHECKED_OUT = 'checked_out';
+
     public const STATUS_CANCELLED = 'cancelled';
+
     public const STATUS_NO_SHOW = 'no_show';
 
     public const PAYMENT_UNPAID = 'unpaid';
+
     public const PAYMENT_PARTIAL = 'partial';
+
     public const PAYMENT_PAID = 'paid';
 
     protected $fillable = [
@@ -80,7 +87,7 @@ class Reservation extends Model
     public static function generateCode(): string
     {
         do {
-            $code = 'RSV-' . strtoupper(Str::random(8));
+            $code = 'RSV-'.strtoupper(Str::random(8));
         } while (static::where('code', $code)->exists());
 
         return $code;
