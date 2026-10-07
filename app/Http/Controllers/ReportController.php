@@ -7,7 +7,6 @@ use App\Models\Reservation;
 use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ReportController extends Controller
 {
@@ -169,7 +168,7 @@ class ReportController extends Controller
             $stream = fopen('php://output', 'w');
 
             if ($type === 'revenue') {
-                fputs($stream, "\xEF\xBB\xBF");
+                fwrite($stream, "\xEF\xBB\xBF");
                 fputcsv($stream, ['Tanggal', 'Reservasi', 'Tamu', 'Metode', 'Referensi', 'Jumlah', 'Petugas']);
                 Payment::with(['reservation.guest', 'user'])
                     ->whereDate('paid_at', '>=', $from)
@@ -188,7 +187,7 @@ class ReportController extends Controller
                         ]);
                     });
             } else {
-                fputs($stream, "\xEF\xBB\xBF");
+                fwrite($stream, "\xEF\xBB\xBF");
                 fputcsv($stream, ['Tanggal', 'Kamar Tersedia', 'Kamar Terisi', 'Tingkat Hunian (%)']);
                 $data = $this->occupancy(request()->merge(['type' => null]));
                 foreach ($data->getData()->daily as $row) {

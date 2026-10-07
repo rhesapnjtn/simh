@@ -21,7 +21,7 @@ return new class extends Migration
         if (Schema::getConnection()->getDriverName() === 'mysql') {
             DB::statement("ALTER TABLE users MODIFY role ENUM({$enum}) NOT NULL DEFAULT 'receptionist'");
         } else {
-            Schema::table('users', function (Blueprint $table) use ($enum) {
+            Schema::table('users', function (Blueprint $table) {
                 $table->enum('role', $this->roles)->default('receptionist')->change();
             });
         }

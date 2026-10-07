@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Middleware\EnsurePermission;
+use App\Http\Middleware\EnsureRole;
+use App\Http\Middleware\NoCache;
+use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,17 +17,17 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'role' => \App\Http\Middleware\EnsureRole::class,
-            'permission' => \App\Http\Middleware\EnsurePermission::class,
+            'role' => EnsureRole::class,
+            'permission' => EnsurePermission::class,
         ]);
 
         $middleware->append([
-            \App\Http\Middleware\NoCache::class,
-            \App\Http\Middleware\SecurityHeaders::class,
+            NoCache::class,
+            SecurityHeaders::class,
         ]);
 
         $middleware->redirectGuestsTo('/login');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->shouldRenderJsonWhen(fn (\Illuminate\Http\Request $request) => $request->expectsJson());
+        $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->expectsJson());
     })->create();

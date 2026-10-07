@@ -8,8 +8,11 @@ use App\Models\Room;
 use App\Models\RoomType;
 use App\Models\Setting;
 use App\Services\ActivityLogService;
+use App\Services\PricingService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class ReservationController extends Controller
 {
@@ -80,7 +83,7 @@ class ReservationController extends Controller
 
         $taxRate = (float) $request->input('tax_rate', Setting::get('tax_rate', 10));
 
-        $pricing = \App\Services\PricingService::compute(
+        $pricing = PricingService::compute(
             $nights,
             (float) $roomType->base_rate,
             (float) $roomType->extra_person_rate,
@@ -418,10 +421,10 @@ class ReservationController extends Controller
         return $request->validate($rules);
     }
 
-    protected function assertRoomAvailable(Room $room, \Carbon\Carbon $checkIn, \Carbon\Carbon $checkOut, ?int $excludeReservationId = null): void
+    protected function assertRoomAvailable(Room $room, Carbon $checkIn, Carbon $checkOut, ?int $excludeReservationId = null): void
     {
         if (in_array($room->status, [Room::STATUS_OCCUPIED, Room::STATUS_MAINTENANCE])) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'room_id' => ["Kamar {$room->room_number} sedang tidak tersedia."],
             ]);
         }
@@ -434,7 +437,7 @@ class ReservationController extends Controller
             ->exists();
 
         if ($conflict) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'room_id' => ["Kamar {$room->room_number} sudah direservasi pada rentang tanggal tersebut."],
             ]);
         }

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AycePackage;
 use App\Models\EventBooking;
 use App\Models\EventPayment;
 use App\Models\EventVenue;
+use App\Models\Setting;
 use App\Services\ActivityLogService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -255,7 +258,7 @@ class EventBookingController extends Controller
         $isAyce = ($data['event_type'] ?? null) === EventBooking::TYPE_AYCE;
 
         if ($isAyce && $data['ayce_package_id'] ?? null) {
-            $package = \App\Models\AycePackage::find($data['ayce_package_id']);
+            $package = AycePackage::find($data['ayce_package_id']);
             $pricePerPax = (float) ($data['price_per_pax'] ?? 0) > 0
                 ? (float) $data['price_per_pax']
                 : (float) ($package?->price_per_pax ?? 0);
@@ -283,7 +286,7 @@ class EventBookingController extends Controller
             'price_per_pax' => $pricePerPax,
             'addons' => $data['addons'] ?? [],
             'discount' => (float) ($data['discount'] ?? 0),
-            'tax_rate' => (float) ($data['tax_rate'] ?? \App\Models\Setting::get('tax_rate', 10)),
+            'tax_rate' => (float) ($data['tax_rate'] ?? Setting::get('tax_rate', 10)),
             'setup_at' => $data['setup_at'] ?? null,
             'notes' => $data['notes'] ?? null,
         ];
@@ -298,7 +301,7 @@ class EventBookingController extends Controller
         }
     }
 
-    protected function assertVenueAvailable(int $venueId, \Carbon\Carbon $start, \Carbon\Carbon $end, ?int $excludeId = null): void
+    protected function assertVenueAvailable(int $venueId, Carbon $start, Carbon $end, ?int $excludeId = null): void
     {
         $conflict = EventBooking::where('venue_id', $venueId)
             ->whereIn('status', [EventBooking::STATUS_PENDING, EventBooking::STATUS_CONFIRMED, EventBooking::STATUS_IN_PROGRESS])

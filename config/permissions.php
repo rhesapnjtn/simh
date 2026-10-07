@@ -83,7 +83,7 @@ return [
         // Role lama (kompatibilitas)
         'receptionist' => [
             'label' => 'Resepsionis',
-'permissions' => [
+            'permissions' => [
                 'dashboard.view',
                 'rooms.view', 'rooms.status',
                 'room_types.view',
