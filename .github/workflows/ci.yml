@@ -30,6 +30,12 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate
 
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Build assets
+        run: npm run build
+
       - name: PHP Syntax Check
         run: find app routes config database -name "*.php" -exec php -l {} \;
 
